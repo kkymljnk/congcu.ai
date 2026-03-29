@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "cf:build": "next build && next-on-pages",
     "cf:deploy": "wrangler pages deploy .vercel/output/static --project-name kol --branch production",
     "start": "next start",

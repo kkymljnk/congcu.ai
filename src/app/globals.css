@@ -750,7 +750,7 @@ html, body {
     letter-spacing: 0;            /* base: gọn */
     line-height: 1.15;            /* base: chặt vừa */
   }
-  @screen md {
+  @media (min-width: 768px) {
     .oswald-heading {
       letter-spacing: 0.02em;     /* md+: nới tracking 1 chút */
       line-height: 1.1;           /* md+: chặt hơn cho title lớn */
