@@ -1,0 +1,760 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@font-face {
+  font-family: "FT Regola Neue";
+  src: url("/fonts/FTRegolaNeue-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FT Regola Neue";
+  src: url("/fonts/FTRegolaNeue-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FT Regola Neue";
+  src: url("/fonts/FTRegolaNeue-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FT Regola Neue";
+  src: url("/fonts/FTRegolaNeue-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("/fonts/RobotoMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/InterVariable.woff2") format("woff2-variations");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+  --font-ft-regola: "FT Regola Neue", sans-serif;
+  --font-roboto-mono: "Roboto Mono", monospace;
+}
+
+@keyframes text-gradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.animate-text-gradient {
+  background-size: 200% auto;
+  animation: text-gradient 4s ease-in-out infinite alternate;
+}
+
+/* khi sidepanel mở: chặn scroll nền & overscroll */
+.body-lock {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+/* ====== Nút glass dùng chung ====== */
+.glass-btn{
+  @apply inline-flex items-center gap-2 rounded-full px-3 py-2
+         text-white/90 bg-white/10 ring-1 ring-white/15 backdrop-blur-md
+         transition-all duration-200 ease-out select-none;
+  will-change: transform, box-shadow, background;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover desktop */
+@media (hover:hover){
+  .glass-btn:hover{
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0,0,0,.45);
+    border-color: rgba(255,255,255,.25);
+    transform: translateY(-1px) scale(1.02);
+  }
+}
+
+/* Active mobile */
+@media (hover:none){
+  .glass-btn:active{
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0,0,0,.45);
+    border-color: rgba(255,255,255,.25);
+    transform: translateY(-1px) scale(1.02);
+  }
+}
+
+/* ====== Tooltip ====== */
+.glass-btn .tooltip{
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  @apply text-[12px] whitespace-nowrap rounded-md px-2 py-1
+         bg-black/70 text-white/90 ring-1 ring-white/10 backdrop-blur-md;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+/* Hiện tooltip khi hover (desktop) */
+@media (hover:hover){
+  .glass-btn:hover .tooltip{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Mobile: hiện tooltip khi focus (tap) */
+.glass-btn:focus .tooltip,
+.glass-btn:active .tooltip{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Nhãn "Liên hệ nhanh" ẩn trên mobile, hiện từ sm: */
+@media (max-width: 639.98px){
+  .contact-label{ display: none; }
+}
+
+
+
+html, body {
+  body { font-weight: 400; }
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+.oswald-300 { font-weight: 300; }
+*, *::before, *::after { font-weight: inherit !important; }
+
+  margin: 0 !important;
+  padding: 0 !important;
+    font-family: var(--font-oswald), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Oswald, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+}
+main { margin: 0 !important; padding: 0 !important; }
+
+/* iOS notch: tránh hở viền nếu có safe area */
+:root { --sat: env(safe-area-inset-top, 0px); }
+
+/* 2) Nếu còn header CŨ render đâu đó, ẩn hết trừ #app-navbar */
+header.fixed.top-0:not(#app-navbar) { display: none !important; }
+/* Nếu cần ẩn header cũ, dùng selector cụ thể thay vì mọi header fixed */
+header.legacy-header { display: none !important; }
+
+/* app/globals.css */
+
+/* LENIS SCROLLING CORE STYLES */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* HIDE SCROLLBARS GLOBALLY */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Đặt 300 là mặc định cho body */
+/* globals.css */
+:root { --font-oswald: Oswald, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.font-oswald { font-family: var(--font-oswald); }
+
+/* Set mặc định toàn site (tuỳ bạn) */
+html, body {
+  font-family: var(--font-oswald);
+  font-weight: 400; /* Regular 400 toàn site */
+}
+
+/* Các nơi cần Light 300 */
+.font-light-300 { font-weight: 300; }
+
+/* Ví dụ tiêu đề đậm hơn */
+.h1-hero { font-weight: 600; }
+
+/* Tooltip glass */
+[data-tip]{
+  position: relative;
+}
+[data-tip]::after{
+  content: attr(data-tip);
+  position: absolute;
+  left: 0; top: -38px;
+  transform: translateY(6px);
+  opacity: 0; pointer-events: none;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 10px;
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+  background: rgba(255,255,255,.08);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.12);
+  transition: transform .18s ease, opacity .18s ease;
+}
+[data-tip]::before{
+  content:"";
+  position:absolute;
+  left: 14px; top: -12px;
+  border: 6px solid transparent;
+  border-top-color: rgba(255,255,255,.12); /* viền nhỏ */
+}
+[data-tip]:hover::after{
+  transform: translateY(0);
+  opacity: 1;
+}
+@media (hover:none){ /* trên mobile: chỉ dùng title native cho đơn giản */
+  [data-tip]::after, [data-tip]::before{ display:none; }
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.1 0 0);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.1 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.7 0.2 200);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.2 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.6 0 0);
+  --accent: oklch(0.5 0.25 280);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.3 0 0 / 0.2);
+  --input: oklch(0.3 0 0 / 0.2);
+  --ring: oklch(0.7 0.2 200 / 0.3);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 1rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes gradient {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  @keyframes rotate-angle--NYRN8 {
+    0% {
+      --rainbow-angle: 0deg;
+    }
+    100% {
+      --rainbow-angle: 360deg;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    animation: gradient 4s ease-in-out infinite;
+  }
+
+  .animate-text-gradient {
+    animation: text-gradient 6s linear infinite;
+  }
+
+  /* Chống Drag & Select hình ảnh lõi toàn cầu */
+  img, svg, a {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+
+  .entryItem--EJ1OI {
+    display: block;
+    position: relative;
+    width: 300px;
+    height: 118px;
+    border-radius: 18px;
+    box-sizing: border-box;
+    overflow: hidden;
+    justify-self: center;
+
+    background: rgba(0, 0, 0, 0);
+    color: #333;
+    font-family: Oswald, sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .entryItem--EJ1OI:hover {
+    transform: scale(1.02);
+  }
+  .rainbowBorder--zEd5m {
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+  }
+
+  .rainbowBorderCard--vsze8 .rainbowBorder--zEd5m {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    animation: rotate-angle--NYRN8 8s linear infinite;
+    animation-play-state: paused;
+    background: conic-gradient(
+      from var(--rainbow-angle),
+      #31cafb,
+      #feb8ff,
+      #fe57ff,
+      #bd4cfd,
+      #0050ce,
+      #3ae8f0,
+      #edff6b,
+      #36fe50,
+      #31cafb
+    );
+    opacity: 0;
+    transition: opacity 0.3s linear;
+    filter: brightness(1) blur(10px);
+    /* mask: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 %3e%3cdefs%3e%3cfilter id=%27inner-glow%27%3e%3cfeMorphology operator=%27erode%27 radius=%271%27 in=%27SourceAlpha%27 result=%27shrunk%27/%3e%3cfeGaussianBlur in=%27shrunk%27 stdDeviation=%276%27 result=%27blurred%27/%3e%3cfeComposite in=%27SourceAlpha%27 in2=%27blurred%27 operator=%27out%27/%3e%3c/filter%3e%3c/defs%3e%3crect width=%27100%25%27 height=%27100%25%27 rx=%2720%27 ry=%2720%27 fill=%27white%27 filter=%27url%28%23inner-glow%29%27/%3e%3c/svg%3e")
+      no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%; */
+    mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3cfilter id='inner-glow'%3e%3cfeMorphology operator='erode' radius='0.5' in='SourceAlpha' result='shrunk'/%3e%3cfeGaussianBlur in='shrunk' stdDeviation='5' result='blurred'/%3e%3cfeComposite in='SourceAlpha' in2='blurred' operator='out'/%3e%3c/filter%3e%3c/defs%3e%3crect width='100%25' height='100%25' rx='20' ry='20' fill='white' filter='url(%23inner-glow)'/%3e%3c/svg%3e")
+      no-repeat center / cover;
+
+    -webkit-mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3cfilter id='inner-glow'%3e%3cfeMorphology operator='erode' radius='0.5' in='SourceAlpha' result='shrunk'/%3e%3cfeGaussianBlur in='shrunk' stdDeviation='5' result='blurred'/%3e%3cfeComposite in='SourceAlpha' in2='blurred' operator='out'/%3e%3c/filter%3e%3c/defs%3e%3crect width='100%25' height='100%25' rx='20' ry='20' fill='white' filter='url(%23inner-glow)'/%3e%3c/svg%3e")
+      no-repeat center / cover;
+
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    pointer-events: none;
+  }
+  .rainbowBorderCard--vsze8:hover .rainbowBorder--zEd5m {
+    opacity: 1;
+    animation-play-state: running;
+  }
+  .dark .rainbowBorderCard--vsze8 .rainbowBorder--zEd5m {
+    filter: brightness(1.2) blur(10px);
+  }
+  .entryItemCover--qs5Bn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+  }
+  .entryItemContent--U38OB {
+    width: 100%;
+    height: 100%;
+    /* padding-left: 25px; */
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .entries--NH77A:not([data-entry-size="1"]) .entryItem--EJ1OI {
+    height: 113px;
+  }
+  .glass-surface {
+    position: relative;
+    display: flex;
+    left: 50;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.26s ease-out;
+  }
+  .glass-surface__filter {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    z-index: -1;
+  }
+  .glass-surface__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: inherit;
+    position: relative;
+    z-index: 1;
+  }
+  .glass-surface--svg {
+    background: light-dark(
+      hsl(0 0% 100% / var(--glass-frost, 0)),
+      hsl(0 0% 0% / var(--glass-frost, 0))
+    );
+    backdrop-filter: var(--filter-id) saturate(var(--glass-saturation, 1));
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.2) inset,
+      0 0 10px 4px rgba(255, 255, 255, 0.1) inset,
+      0px 4px 16px rgba(255, 255, 255, 0.05) inset,
+      0px 8px 24px rgba(255, 255, 255, 0.05) inset,
+      0px 16px 56px rgba(255, 255, 255, 0.05) inset;
+  }
+  .pc-app-container:not(.safari) .glass-surface__content {
+    border: 1px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3Cfilter%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22inner-glow%22%3E%3CfeMorphology%20operator%3D%22erode%22%20radius%3D%221%22%20in%3D%22SourceAlpha%22%2F%3E%3CfeComposite%20in%3D%22SourceAlpha%22%20operator%3D%22out%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20rx%3D%2218%22%20ry%3D%2218%22%20fill%3D%22white%22%20filter%3D%22url%28%23inner-glow%29%22%2F%3E%3C%2Fsvg%3E")
+      no-repeat;
+  }
+  .pc-app-container:not(.safari) .glass-surface__content {
+    border-radius: 19px;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(220, 220, 220, 0.5) 0%,
+        rgba(220, 220, 220, 0.2) 50%
+      ),
+      linear-gradient(
+        to bottom right,
+        rgba(220, 220, 220, 0.5) 0%,
+        rgba(220, 220, 220, 0.2) 50%
+      );
+  }
+  .pc-app-container:not(.safari) .dark-mode .glass-surface__content {
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0) 50%
+      ),
+      linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0) 50%
+      );
+  }
+  .glass-surface--fallback {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .dark-mode .glass-surface--fallback {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .entryItemTitle--YpbZm {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .entryItemTitle--YpbZm h2 {
+    font-family: PingFangSC-Semibold;
+    font-size: 20px;
+    color: var(--quark-style-black-color);
+    line-height: 21px;
+    font-weight: 600;
+  }
+  .entryIcon--gDW_r {
+    display: inline-block;
+    margin-right: 12px;
+    flex-shrink: 0;
+    line-height: 0;
+    width: 20px;
+    height: 20px;
+  }
+  .entryIcon--gDW_r:first-child {
+    margin-bottom: 2px;
+  }
+  .entryIcon--gDW_r svg {
+    width: 100%;
+    height: 100%;
+  }
+  .entryIconArrow--MHcvC {
+    width: 16px;
+    height: 16px;
+    margin: 0 23px 0 auto;
+    transition: all 0.3s;
+    transform: translate(0, 1px);
+  }
+  .entryIcon--gDW_r img {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .entryItemDesc--SA6XX {
+    margin-top: 12px;
+    font-family: "OPlusSans3.0";
+    font-size: 14px;
+    color: var(--quark-style-gray-50-color);
+    text-align: justify;
+    font-weight: 400;
+  }
+
+  @supports not (backdrop-filter: blur(10px)) {
+    .glass-surface--fallback {
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 0 rgba(255, 255, 255, 0.3);
+    }
+    .glass-surface--fallback::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: inherit;
+      z-index: -1;
+    }
+  }
+  @supports not (backdrop-filter: blur(10px)) {
+    .dark-mode .glass-surface--fallback {
+      background: rgba(0, 0, 0, 0.4);
+    }
+    .dark-mode .glass-surface--fallback::before {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+  .glass-surface:focus-visible {
+    outline: 2px solid light-dark(#007aff, #0a84ff);
+    outline-offset: 2px;
+  }
+  /* Gói đoạn bạn gửi vào trong class riêng */
+  .tw-reset:before,
+  .tw-reset:after {
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    /* thêm mấy biến backdrop để đồng nhất */
+    --tw-backdrop-blur: ;
+    --tw-backdrop-brightness: ;
+    --tw-backdrop-contrast: ;
+    --tw-backdrop-grayscale: ;
+    --tw-backdrop-hue-rotate: ;
+    --tw-backdrop-invert: ;
+    --tw-backdrop-opacity: ;
+    --tw-backdrop-saturate: ;
+    --tw-backdrop-sepia: ;
+  }
+
+  /* style cho div để bạn thấy rõ */
+  .tw-reset {
+    position: relative;
+    display: inline-block;
+    padding: 16px 24px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, #9333ea);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  /* dùng ::before để demo áp dụng biến */
+  .tw-reset::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(var(--tw-scale-x)) translateY(var(--tw-translate-y));
+    z-index: -1;
+  }
+  /* Thêm keyframes để xoay góc cầu vồng */
+  @keyframes rotate-angle--NYRN8 {
+    0% {
+      --rainbow-angle: 0deg;
+    }
+    100% {
+      --rainbow-angle: 360deg;
+    }
+  }
+}
+@layer utilities {
+  /* Body text: Oswald 400/500, tracking nhẹ, line-height thoáng */
+  .oswald-body {
+    font-family: var(--font-oswald), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    font-weight: 400;             /* mặc định 400 */
+    letter-spacing: 0.005em;      /* tracking nhẹ */
+    line-height: 1.6;             /* thoáng hơn */
+  }
+  .oswald-body-500 { font-weight: 500; }
+
+  /* Heading: Oswald 600, tracking & line-height theo breakpoint */
+  .oswald-heading {
+    font-family: var(--font-oswald), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    font-weight: 600;             /* heading mặc định 600 */
+    letter-spacing: 0;            /* base: gọn */
+    line-height: 1.15;            /* base: chặt vừa */
+  }
+  @screen md {
+    .oswald-heading {
+      letter-spacing: 0.02em;     /* md+: nới tracking 1 chút */
+      line-height: 1.1;           /* md+: chặt hơn cho title lớn */
+    }
+  }
+  .oswald-heading-700 { font-weight: 700; } /* nếu cần title thật đậm */
+}

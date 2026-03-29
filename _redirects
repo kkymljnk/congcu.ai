@@ -1,0 +1,7 @@
+# giữ nguyên /api cho Next
+/api/*      /api/:splat   200
+
+# (tuỳ chọn) SPA catch-all – CHỈ đặt nếu app của bạn cần
+/*          /index.html   200
+/api/*   /api/:splat   200
+/*       /index.html   200
