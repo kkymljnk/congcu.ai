@@ -50,9 +50,7 @@ export default function Header() {
         </ul>
 
         <div className="ml-4 hidden lg:flex items-center gap-3">
-          <Link href="/login" className="px-5 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-md transition-transform hover:scale-105 active:scale-95 text-sm font-semibold text-foreground shadow-lg">
-            {t('login')}
-          </Link>
+
           {mounted && (
             <button
               onClick={() => setLang(lang === 'en' ? 'vi' : 'en')}
@@ -128,11 +126,7 @@ export default function Header() {
           <li><a href="#pricing"  className="flex items-center gap-3 py-3 px-2 opacity-70 hover:opacity-100 transition-opacity"><span className="text-base">Pricing</span></a></li>
           <li><a href="#contact"  className="flex items-center gap-3 py-3 px-2 opacity-70 hover:opacity-100 transition-opacity"><span className="text-base">Contact</span></a></li>
         </ul>
-        <div className="px-4 py-4 mt-2 border-t border-white/10">
-          <Link href="/login" className="flex items-center justify-center w-full py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-md transition-transform active:scale-95 text-sm font-semibold text-white shadow-lg">
-            Đăng nhập
-          </Link>
-        </div>
+
       </aside>
     </header>
   );
